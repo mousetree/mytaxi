@@ -5,8 +5,13 @@ from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 from datetime import date, time
+from environs import Env
 from io import StringIO
 import re
+
+env = Env()
+env.read_env()
+NAME_REGEX = env('NAME_REGEX', None)
 
 def convert_pdf_to_txt(path):
     resource_manager = PDFResourceManager()
@@ -32,8 +37,6 @@ def parse_text(text):
 
     # filter empty lines
     splits = [split for split in splits if split.strip() != '']
-    # for split in splits:
-    #     print('"' + split + '"')
 
     from_r = re.compile('^von: (.*)$')
     to_r = re.compile('^nach: (.*)$')
@@ -41,6 +44,11 @@ def parse_text(text):
     price_r = re.compile('^(\d+),(\d+) (€|$|£)$')
 
     meta_data = {}
+    # extract the invoice name and apply regex if specified
+    if NAME_REGEX:
+        meta_data['name'] = re.search(NAME_REGEX, splits[0]).group(0)
+    else:
+        meta_data['name'] = splits[0]
     for i, split in enumerate(splits):
 
         # id
