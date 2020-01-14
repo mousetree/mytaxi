@@ -29,7 +29,12 @@ def print_summary(df):
     total_cost = df['price'].sum()
     total_bills = df.shape[0]
     print(df)
-    print(f'{total_bills} bills with total cost: €{total_cost:.2f}')
+    print_banner(f'{total_bills} bills with total cost: €{total_cost:.2f}')
+
+def print_banner(text):
+    print('\n'+'-'*len(text))
+    print(text)
+    print('-'*len(text)+'\n')
 
 def run():
     setup_directories([ATTACHMENT_DIR, OUTPUT_DIR])
