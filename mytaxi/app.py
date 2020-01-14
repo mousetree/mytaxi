@@ -40,8 +40,10 @@ def run():
     setup_directories([ATTACHMENT_DIR, OUTPUT_DIR])
     download_mytaxi_files(ATTACHMENT_DIR)
     df = pdf_to_df()
-    df.to_csv(os.path.join(OUTPUT_DIR, 'mytaxi.csv'))
+    csv_path = os.path.join(OUTPUT_DIR, 'mytaxi.csv')
+    df.to_csv(csv_path)
     print_summary(df)
+    print(f'A summary of your rides can be found at: {csv_path}')
 
 if __name__== "__main__":
     run()
