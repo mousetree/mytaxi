@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
+from mytaxi.extract import parse_bill
+from mytaxi.download import download_mytaxi_files
 import os
 import pandas as pd
-from extract import parse_bill
-from download import download_mytaxi_files
 
-ATTACHMENT_DIR = os.path.join(os.getcwd(), 'attachments')
-OUTPUT_DIR = os.path.join(os.getcwd(), 'output')
+base_path = os.path.dirname(os.path.realpath(__file__))
+ATTACHMENT_DIR = os.path.join(base_path, '..', 'attachments')
+OUTPUT_DIR = os.path.join(base_path, '..', 'output')
 
 def setup_directories(dirs=[]):
     for directory in dirs:
@@ -28,9 +29,9 @@ def print_summary(df):
     total_cost = df['price'].sum()
     total_bills = df.shape[0]
     print(df)
-    print(f'{total_bills} bills with total cost: €{total_cost}')
+    print(f'{total_bills} bills with total cost: €{total_cost:.2f}')
 
-def main():
+def run():
     setup_directories([ATTACHMENT_DIR, OUTPUT_DIR])
     download_mytaxi_files(ATTACHMENT_DIR)
     df = pdf_to_df()
@@ -38,7 +39,7 @@ def main():
     print_summary(df)
 
 if __name__== "__main__":
-    main()
+    run()
 
 
 

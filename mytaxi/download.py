@@ -1,10 +1,10 @@
+from datetime import datetime
+from environs import Env
 import smtplib
 import time
 import imaplib
 import email
 import os
-from datetime import datetime
-from environs import Env
 
 env = Env()
 env.read_env()
@@ -21,10 +21,9 @@ def download_mytaxi_files(attachment_dir, search_string=DEFAULT_SEARCH_STRING):
     mail = imaplib.IMAP4_SSL(IMAP_HOST, IMAP_PORT)
     mail.login(MY_EMAIL, MY_PASSWORD)
     mail.select("mytaxi")
-    type, data = mail.search(None, search_string)
-    mail_ids = data[0]
+    _, data = mail.search(None, search_string)
     for num in data[0].split():
-        typ, data = mail.fetch(num, '(RFC822)' )
+        _, data = mail.fetch(num, '(RFC822)' )
         raw_email = data[0][1]
         raw_email_string = raw_email.decode('utf-8')
         email_message = email.message_from_string(raw_email_string)

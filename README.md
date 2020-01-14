@@ -17,4 +17,4 @@ Then run the following
 
     pipenv install --dev
     pipenv shell
-    ./mytaxi.py
+    python -m mytaxi
