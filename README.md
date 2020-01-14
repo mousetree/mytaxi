@@ -12,6 +12,7 @@ Create a `.env` file in the root directory with the following contents:
 
     GMAIL_USERNAME=yourname@gmail.com
     GMAIL_APP_PASSWORD=yourapppassword
+    SEARCH_YEAR=2019
 
 If you use 2FA then you will need to [create an app password](https://devanswers.co/create-application-specific-password-gmail/)
 

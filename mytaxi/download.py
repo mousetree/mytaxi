@@ -1,4 +1,3 @@
-from datetime import datetime
 from environs import Env
 import smtplib
 import time
@@ -11,16 +10,16 @@ env.read_env()
 
 MY_EMAIL = env('GMAIL_USERNAME')
 MY_PASSWORD = env('GMAIL_APP_PASSWORD')
+
 IMAP_HOST = "imap.gmail.com"
 IMAP_PORT = 993
-CURRENT_YEAR = datetime.now().year
-DEFAULT_SEARCH_STRING = f'(SINCE 01-Jan-{CURRENT_YEAR})' # can be replaced with 'ALL'
 
-def download_mytaxi_files(attachment_dir, search_string=DEFAULT_SEARCH_STRING):
-    print('Downloading receipts from Gmail...')
+def download_mytaxi_files(attachment_dir, search_year):
+    print(f'Downloading receipts from Gmail for {search_year}...')
     mail = imaplib.IMAP4_SSL(IMAP_HOST, IMAP_PORT)
     mail.login(MY_EMAIL, MY_PASSWORD)
     mail.select("mytaxi")
+    search_string = f'(SINCE 01-Jan-{search_year})'
     _, data = mail.search(None, search_string)
     for num in data[0].split():
         _, data = mail.fetch(num, '(RFC822)' )

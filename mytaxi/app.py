@@ -2,17 +2,23 @@
 
 from mytaxi.extract import parse_bill
 from mytaxi.download import download_mytaxi_files
+from datetime import datetime
+from environs import Env
 import os
 import pandas as pd
 
+env = Env()
+env.read_env()
+
 base_path = os.path.dirname(os.path.realpath(__file__))
-ATTACHMENT_DIR = os.path.join(base_path, '..', 'attachments')
+CURRENT_YEAR = datetime.now().year
+SEARCH_YEAR = env.str('SEARCH_YEAR', CURRENT_YEAR)
+ATTACHMENT_DIR = os.path.join(base_path, '..', 'attachments', SEARCH_YEAR)
 OUTPUT_DIR = os.path.join(base_path, '..', 'output')
 
 def setup_directories(dirs=[]):
     for directory in dirs:
-        if not os.path.exists(directory):
-            os.mkdir(directory)
+        os.makedirs(directory, exist_ok=True)
 
 def pdf_to_df():
     bills = []
@@ -38,7 +44,7 @@ def print_banner(text):
 
 def run():
     setup_directories([ATTACHMENT_DIR, OUTPUT_DIR])
-    download_mytaxi_files(ATTACHMENT_DIR)
+    download_mytaxi_files(ATTACHMENT_DIR, SEARCH_YEAR)
     df = pdf_to_df()
     csv_path = os.path.join(OUTPUT_DIR, 'mytaxi.csv')
     df.to_csv(csv_path)
