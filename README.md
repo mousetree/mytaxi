@@ -13,6 +13,8 @@ Create a `.env` file in the root directory with the following contents:
     GMAIL_USERNAME=yourname@gmail.com
     GMAIL_APP_PASSWORD=yourapppassword
 
+If you use 2FA then you will need to [create an app password](https://devanswers.co/create-application-specific-password-gmail/)
+
 Then run the following
 
     pipenv install --dev
